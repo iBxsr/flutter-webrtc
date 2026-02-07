@@ -21,7 +21,10 @@ class DataChannelObserver implements DataChannel.Observer, EventChannel.StreamHa
 
     private static final int MAX_BATCH_SIZE = 32;
     private static final String BATCH_EVENT_NAME = "dataChannelEventsBatch";
-    private static final ExecutorService EVENT_DISPATCH_EXECUTOR = Executors.newSingleThreadExecutor();
+    private static final int DISPATCH_POOL_SIZE =
+            Math.max(2, Math.min(4, Runtime.getRuntime().availableProcessors()));
+    private static final ExecutorService EVENT_DISPATCH_EXECUTOR =
+            Executors.newFixedThreadPool(DISPATCH_POOL_SIZE);
 
     private final String flutterId;
     private final DataChannel dataChannel;
