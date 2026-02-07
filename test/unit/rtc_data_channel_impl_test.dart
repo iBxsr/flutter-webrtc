@@ -13,7 +13,8 @@ void main() {
   const methodChannel = MethodChannel('FlutterWebRTC.Method');
   const eventMethodChannel = MethodChannel(eventChannelName);
 
-  RTCDataChannelNative createChannel() => RTCDataChannelNative(peerConnectionId, 'label', 1, flutterId);
+  RTCDataChannelNative createChannel() =>
+      RTCDataChannelNative(peerConnectionId, 'label', 1, flutterId);
 
   setUp(() {
     methodChannel.setMockMethodCallHandler((MethodCall methodCall) async {
@@ -29,7 +30,8 @@ void main() {
       }
     });
 
-    eventMethodChannel.setMockMethodCallHandler((MethodCall methodCall) async => null);
+    eventMethodChannel
+        .setMockMethodCallHandler((MethodCall methodCall) async => null);
   });
 
   tearDown(() {
@@ -60,12 +62,14 @@ void main() {
     channel.onBufferedAmountLow = lowBufferedAmounts.add;
     channel.bufferedAmountLowThreshold = 10;
 
-    final messageSub = channel.messageStream.listen((RTCDataChannelMessage msg) {
+    final messageSub =
+        channel.messageStream.listen((RTCDataChannelMessage msg) {
       if (!msg.isBinary) {
         streamMessages.add(msg.text);
       }
     });
-    final stateSub = channel.stateChangeStream.listen((state) => streamStates.add(state));
+    final stateSub =
+        channel.stateChangeStream.listen((state) => streamStates.add(state));
 
     channel.eventListener(<String, dynamic>{
       'event': 'dataChannelStateChanged',
@@ -86,8 +90,10 @@ void main() {
     });
 
     expect(channel.state, RTCDataChannelState.RTCDataChannelOpen);
-    expect(callbackStates, <RTCDataChannelState>[RTCDataChannelState.RTCDataChannelOpen]);
-    expect(streamStates, <RTCDataChannelState>[RTCDataChannelState.RTCDataChannelOpen]);
+    expect(callbackStates,
+        <RTCDataChannelState>[RTCDataChannelState.RTCDataChannelOpen]);
+    expect(streamStates,
+        <RTCDataChannelState>[RTCDataChannelState.RTCDataChannelOpen]);
     expect(callbackMessages, <String>['hello']);
     expect(streamMessages, <String>['hello']);
     expect(bufferedChanges, <List<int>>[
@@ -116,7 +122,8 @@ void main() {
       }
     };
 
-    final messageSub = channel.messageStream.listen((RTCDataChannelMessage msg) {
+    final messageSub =
+        channel.messageStream.listen((RTCDataChannelMessage msg) {
       if (msg.isBinary) {
         streamBinary.add(msg.binary);
       } else {
